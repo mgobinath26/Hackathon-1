@@ -1,0 +1,78 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Battery {
+
+	public static void main(String[] args) throws JSONException {
+		// TODO Auto-generated method stub
+		File file = new File("C:\\Users\\user\\Desktop\\battery.txt");
+		 //JSONObject obj = new JSONObject();
+		JSONObject js1  = new JSONObject();
+		
+		FileReader fr=null;;
+		String str,str1=" ";
+		double value=0.0,per;
+		
+		try {
+			fr = new FileReader(file);
+			BufferedReader br = new BufferedReader(fr);
+			
+				while((str=br.readLine())!=null)
+				{
+				
+					StringTokenizer st = new StringTokenizer(str);
+					while(st.hasMoreTokens())
+					{
+						
+						
+						if(st.nextToken().equals("Foreground"))
+                          {
+							st.nextToken();
+							str1 += st.nextToken() + str1 + st.nextToken()+str1+st.nextToken()+str1+st.nextToken()+str1+st.nextToken()+str1+st.nextToken(); 
+							System.out.println(str1);
+							js1.put("Foreground_time", str1);
+                          }
+						System.out.println(st.nextToken());
+						if(st.nextToken().equals("Uid"))
+						{
+							value  = Double.parseDouble(st.nextToken());
+							System.out.println(value);
+							js1.put("Battery_drain", value);
+						
+						}
+
+					}
+				}
+					per = value/(double)1000;
+					js1.put("Battery_percentage", per);
+					System.out.println(js1);
+					 FileWriter fw = new FileWriter("C:\\Users\\user\\Desktop\\output");
+			            fw.write(js1.toString());
+			            fw.close();
+				
+				
+				
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
+
+	}
+
+}
